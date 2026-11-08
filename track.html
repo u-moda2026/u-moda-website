@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Track order – U Women & Kids</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Jost:wght@300;400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0}
+body{font-family:Jost,Cairo,Arial,sans-serif;color:#050505;background:#fff;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+[dir=rtl] body,[dir=rtl] input,[dir=rtl] textarea,[dir=rtl] button{font-family:Cairo,Jost,sans-serif}
+button,input,textarea{font:inherit}button{cursor:pointer}
+.hd{background:#050505;color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 4vw}
+.lg{color:#fff;text-decoration:none;font-family:Cinzel,serif;font-size:28px;font-weight:600}.lg small{font-size:11px;letter-spacing:.2em;margin-inline-start:8px}
+.pill{background:none;border:1px solid #777;color:#fff;border-radius:16px;padding:3px 14px;font-size:13px}
+main{max-width:640px;margin:auto;padding:18px 4vw 70px}h1{font-size:22px;margin-bottom:10px}
+label{display:block;font-size:13px;margin:12px 0 4px}input,textarea{width:100%;padding:11px;border:1px solid #999;border-radius:8px}
+.btn{display:block;width:100%;text-align:center;margin-top:14px;padding:15px;background:#000;color:#fff;border:1px solid #000;border-radius:30px;font-size:16px;text-decoration:none}.btn.o{background:#fff;color:#000}
+.msg{color:#a11;font-size:14px;margin-top:10px}.note{background:#f4f4f4;border-radius:8px;padding:12px;font-size:14px;line-height:1.7;margin-top:12px}
+.st{list-style:none;padding:0;margin:18px 0}.st li{display:flex;gap:14px;align-items:flex-start;padding-bottom:22px;position:relative;color:#888}
+.st li:before{content:"";width:22px;height:22px;border-radius:50%;border:2px solid #ccc;background:#fff;flex:none;z-index:1}
+.st li:not(:last-child):after{content:"";position:absolute;top:22px;bottom:0;inset-inline-start:10px;width:2px;background:#ddd}
+.st li.d{color:#000}.st li.d:before{background:#000;border-color:#000}.st li.d:not(:last-child):after{background:#000}
+.st li.c{color:#000;font-weight:600}.st li.c:before{background:#fff;border:6px solid #000}
+.stars{display:flex;gap:6px;font-size:34px;direction:ltr}.stars button{background:none;border:0;color:#ccc;padding:0}.stars button.on{color:#e0a800}
+</style></head><body>
+<div class="hd"><a class="lg" href="index.html">U<small>WOMEN &amp; KIDS</small></a><button class="pill" id="lang" type="button">العربية</button></div>
+<main id="app"></main>
+<script src="config.js"></script>
+<script>
+(function(){
+var C=U_CFG,ar=false,res=null,msg='',stars=0,rated=false;
+var q=new URLSearchParams(location.search),F={id:q.get('id')||'',ph:''};
+try{ar=localStorage.getItem('u-lang')==='ar'}catch(e){}
+var $=function(i){return document.getElementById(i)};
+function T(e,a){return ar?a:e}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function dg(s){return String(s||'').replace(/\D/g,'').slice(-10)}
+var ST=[['Order received','تم استلام الطلب'],['Processing','جاري التجهيز'],['Dispatched','تم الشحن'],['On the way to you','في الطريق إليك'],['Delivered','تم التسليم']];
+function local(){try{var l=JSON.parse(localStorage.getItem('u-orders')||'[]');return l.filter(function(o){return o.id===F.id.toUpperCase()&&(!F.ph||dg(o.phone)===dg(F.ph))})[0]}catch(e){}}
+function view(){
+ document.documentElement.lang=ar?'ar':'en';document.documentElement.dir=ar?'rtl':'ltr';$('lang').textContent=ar?'English':'العربية';
+ var h='<h1>'+T('Track your order','تتبع طلبك')+'</h1><label>'+T('Order number','رقم الطلب')+'</label><input id="id" placeholder="U-12345" value="'+esc(F.id)+'"><label>'+T('Phone used in the order','رقم الموبايل المستخدم في الطلب')+'</label><input id="ph" type="tel" inputmode="tel" value="'+esc(F.ph)+'"><button class="btn" id="go">'+T('Track','تتبع')+'</button>';
+ if(msg)h+='<div class="msg">'+msg+'</div>';
+ if(res){var s=res.status;h+='<ul class="st">'+ST.map(function(x,i){return '<li class="'+(i<s?'d':i===s?'c':'')+'">'+x[ar?1:0]+'</li>'}).join('')+'</ul>';
+  if(s>=4){if(res.rating||rated){h+='<div class="note">★ '+T('Thank you for your rating!','شكراً على تقييمك!')+'</div>'}
+   else h+='<h1 style="margin-top:8px">'+T('Rate your order','قيّم طلبك')+'</h1><div class="stars">'+[1,2,3,4,5].map(function(i){return '<button data-s="'+i+'" class="'+(i<=stars?'on':'')+'" aria-label="'+i+'">★</button>'}).join('')+'</div><label>'+T('Your comment (optional)','تعليقك (اختياري)')+'</label><textarea id="rv" rows="3"></textarea><button class="btn" id="rt">'+T('Send rating','إرسال التقييم')+'</button>'}
+  if(!C.ordersApi)h+='<div class="note">'+T('Live updates are not connected yet. We will message you on WhatsApp at each stage.','التحديث المباشر غير مفعّل بعد. هنبعتلك على واتساب في كل مرحلة.')+'</div>'}
+ h+='<a class="btn o" href="index.html">'+T('Continue shopping','متابعة التسوق')+'</a>';
+ $('app').innerHTML=h;
+ $('go').onclick=function(){F.id=$('id').value.trim();F.ph=$('ph').value.trim();look()};
+ document.querySelectorAll('[data-s]').forEach(function(b){b.onclick=function(){stars=+b.dataset.s;var r=$('rv')?$('rv').value:'';view();$('rv').value=r}});
+ if($('rt'))$('rt').onclick=function(){if(!stars){msg=T('Choose 1–5 stars','اختر من 1 إلى 5 نجوم');view();return}
+  var rv=$('rv').value.trim();rated=true;msg='';
+  if(C.ordersApi)fetch(C.ordersApi,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify({action:'rate',id:F.id.toUpperCase(),phone:F.ph,stars:stars,review:rv})}).catch(function(){});
+  view()}}
+function look(){msg='';res=null;rated=false;
+ if(!F.id||!F.ph){msg=T('Enter the order number and phone.','اكتب رقم الطلب ورقم الموبايل.');view();return}
+ if(C.ordersApi){fetch(C.ordersApi+'?action=status&id='+encodeURIComponent(F.id.toUpperCase())+'&phone='+encodeURIComponent(F.ph)).then(function(r){return r.json()}).then(function(d){if(d.ok)res={status:d.status,rating:d.rating};else msg=T('No order found with these details.','مفيش طلب بالبيانات دي.');view()}).catch(function(){msg=T('Connection problem. Try again.','مشكلة في الاتصال. حاول تاني.');view()});return}
+ var o=local();if(o)res={status:o.status||0};else msg=T('No order found with these details on this device.','مفيش طلب بالبيانات دي على الجهاز ده.');view()}
+view();
+if(F.id){var lo=local();if(lo){F.ph=lo.phone;look()}}
+$('lang').onclick=function(){ar=!ar;try{localStorage.setItem('u-lang',ar?'ar':'en')}catch(e){}view()};
+})();
+</script></body></html>
