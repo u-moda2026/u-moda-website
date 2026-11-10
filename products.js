@@ -1,4 +1,4 @@
-// عشان تعدّل: غيّر price أو images أو أضف منتج جديد في القائمة دي
+// عشان تعدّل: غيّر price أو images أو أضف منتج جديد في القائمة دي (ده الملف الوحيد للمنتجات). للمنتج اللي له لونين: اكتب نفس الكود في سطرين وضيف لكل سطر "color": {"ar":"وردي","en":"Pink","hex":"#f4b6c8"}
 const PRODUCTS = [
   {
     "id": "8562",
@@ -9,7 +9,12 @@ const PRODUCTS = [
     "sizes": "2-3-4-5",
     "images": [
       "8562-1.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "وردي",
+      "en": "Pink",
+      "hex": "#f4b6c8"
+    }
   },
   {
     "id": "8562-2",
@@ -21,7 +26,12 @@ const PRODUCTS = [
     "images": [
       "8562-2-1.jpg",
       "8562-2-2.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "موف",
+      "en": "Purple",
+      "hex": "#7b5ea7"
+    }
   },
   {
     "id": "8560",
@@ -132,7 +142,12 @@ const PRODUCTS = [
     "images": [
       "8561-1.jpg",
       "8561-2.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "وردي",
+      "en": "Pink",
+      "hex": "#f4b6c8"
+    }
   },
   {
     "id": "8561-2",
@@ -144,7 +159,12 @@ const PRODUCTS = [
     "images": [
       "8561-2-1.jpg",
       "8561-2-2.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "موف",
+      "en": "Purple",
+      "hex": "#7b5ea7"
+    }
   },
   {
     "id": "271026",
@@ -155,7 +175,12 @@ const PRODUCTS = [
     "sizes": "10-12-14-16",
     "images": [
       "271026-1.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "بوردو",
+      "en": "Burgundy",
+      "hex": "#7a1f3d"
+    }
   },
   {
     "id": "271026-2",
@@ -166,7 +191,12 @@ const PRODUCTS = [
     "sizes": "8",
     "images": [
       "271026-2-1.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "كحلي",
+      "en": "Navy",
+      "hex": "#1f2f6b"
+    }
   },
   {
     "id": "2093",
@@ -335,7 +365,12 @@ const PRODUCTS = [
     "images": [
       "27071-1.jpg",
       "27071-2.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "أوف وايت",
+      "en": "Off-white",
+      "hex": "#f3ede0"
+    }
   },
   {
     "id": "27071-2",
@@ -347,7 +382,12 @@ const PRODUCTS = [
     "images": [
       "27071-2-1.jpg",
       "27071-2-2.jpg"
-    ]
+    ],
+    "color": {
+      "ar": "بني",
+      "en": "Brown",
+      "hex": "#5a3a28"
+    }
   },
   {
     "id": "27005",
@@ -527,3 +567,30 @@ const PRODUCTS = [
     ]
   }
 ];
+
+/* ===== يبني كتالوج صفحة المنتج والسلة تلقائياً من القائمة اللي فوق (لا تعدّل هنا) ===== */
+(function(){
+  var EN={"suit-girls":"Girls' Suit","suit-boys":"Boys' Suit","hoodie":"Hoodie","sweatshirt":"Sweatshirt","jacket":"Jacket","tops":"Top","pants":"Joggers"};
+  var by={},order=[];
+  PRODUCTS.forEach(function(p){
+    if(!by[p.code]){by[p.code]=[];order.push(p.code)}
+    by[p.code].push(p);
+  });
+  var products=order.map(function(code){
+    var v=by[code],f=v[0];
+    var sz=String(f.sizes||'');
+    var sizes=(sz.indexOf('/')>-1?sz.split('/'):sz.split('-')).map(function(x){return x.trim()}).filter(Boolean);
+    return {
+      code:code,
+      name:{en:EN[f.cat]||'Product',ar:f.title},
+      sizes:sizes,
+      group:f.cat,
+      price:f.price,
+      old:0,
+      colors:v.map(function(x,i){
+        var k=x.color;return {name:k?{en:k.en,ar:k.ar}:(v.length>1?{en:'Color '+(i+1),ar:'لون '+(i+1)}:{en:'',ar:''}),hex:k?k.hex:'#d9d9d9',imgs:x.images};
+      })
+    };
+  });
+  window.CATALOG={groups:[],products:products};
+})();
