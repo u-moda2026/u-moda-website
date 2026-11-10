@@ -156,7 +156,7 @@ function readForm(){
 var A={
   close:close,
   inc:function(b){var i=S.items[+b.dataset.i];if(i&&i.qty<20){i.qty++;save();refresh();draw()}},
-  dec:function(b){var i=S.items[+b.dataset.i];if(i&&i.qty>1){i.qty--;save();refresh();draw()}},
+  dec:function(b){var n=+b.dataset.i,i=S.items[n];if(!i)return;if(i.qty>1){i.qty--}else{S.items.splice(n,1)}save();refresh();draw()},
   del:function(b){S.items.splice(+b.dataset.i,1);save();refresh();draw()},
   code:function(){var v=($('uc-code').value||'').trim().toUpperCase();if(!v){S.code='';msgErr=''}else if(!CFG.codes[v]){msgErr=T('Invalid code','الكود غير صحيح')}else{S.code=v;msgErr=''}save();draw()},
   toCart:function(){readForm();S.first=false;step='cart';msgErr='';draw()},
