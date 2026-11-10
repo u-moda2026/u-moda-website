@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="products.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>U Women & Kids – Product</title><meta name="description" content="U-MODA – women &amp; kids fashion in Egypt. Delivery across Egypt, pay by InstaPay or cash on delivery. | أزياء حريمي وأطفال – توصيل لكل محافظات مصر."><meta property="og:title" content="U Women &amp; Kids – Wear it. Live it."><meta property="og:type" content="website"><meta property="og:url" content="https://u-moda.com/"><meta name="theme-color" content="#050505">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Jost:wght@300;400;500&family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#050505;--line:#d9d9d9;--mist:#f2f2f2;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{font-family:Jost,Cairo,Arial,sans-serif;background:#fff;color:var(--ink)}
+[dir=rtl] body,[dir=rtl] input,[dir=rtl] select,[dir=rtl] button{font-family:Cairo,Jost,sans-serif}
+button,input,select{font:inherit}button{cursor:pointer}
+:focus-visible{outline:2px solid #777;outline-offset:2px}
+.bar{background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:10px 4vw}
+.top{background:var(--ink);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:8px 4vw;font-size:13px;border-bottom:1px solid #222}
+.top nav{display:flex;gap:18px;align-items:center}
+.top a{color:#fff;text-decoration:none}
+header{background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 4vw 0;gap:16px}
+.search{display:flex;align-items:center;border:1px solid #888;border-radius:12px;padding:0 14px;height:38px;max-width:320px;background:#0b0b0b}
+.search input{flex:1;background:none;border:0;color:#fff;font-size:13px;outline:0;min-width:0;padding:0;width:auto}
+.logo{text-align:center;font-family:Cinzel,serif;line-height:1;color:#fff;text-decoration:none}
+.logo .u{font-size:58px;font-weight:600;background:linear-gradient(180deg,#fff,#8d8d92);-webkit-background-clip:text;background-clip:text;color:transparent;display:block}
+.logo .w{font-size:21px;letter-spacing:.04em;border-bottom:1px solid #fff;padding-bottom:4px;display:inline-block}
+.logo .t{font-size:9px;letter-spacing:.4em;display:block;margin-top:4px}
+.icons{display:flex;justify-content:flex-end;gap:22px;align-items:center}
+.icons button{background:none;border:0;color:#fff;font-size:24px}
+.menu{background:var(--ink);display:flex;justify-content:center;gap:34px;padding:10px 4vw 14px;font-size:14px;color:#fff;overflow-x:auto;white-space:nowrap}
+.menu a{color:#fff;text-decoration:none}.menu a.on{border-bottom:1px solid #fff;padding-bottom:3px}
+@media(max-width:800px){header{grid-template-columns:auto 1fr}.logo{order:-1;grid-column:1/-1}.search{max-width:none}.top nav a{display:none}}
+.bar .r{display:flex;gap:14px;align-items:center}
+.pill{background:none;border:1px solid #777;color:#fff;border-radius:16px;padding:3px 14px;font-size:13px}
+.cartbtn{position:relative;background:none;border:0;color:#fff;font-size:22px}
+.cartbtn b{position:absolute;top:-6px;inset-inline-end:-10px;background:#fff;color:#000;border-radius:50%;width:17px;height:17px;font-size:10px;display:grid;place-items:center}
+.crumb{padding:12px 4vw;font-size:13px;color:#666}
+main{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;padding:0 4vw 40px;max-width:1100px;margin:auto}
+.main-img{aspect-ratio:3/4;border-radius:12px;display:grid;place-items:center;color:#777;font-size:13px;background:linear-gradient(#cfcfcf,#111)}
+.thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.thumbs button{aspect-ratio:1;border-radius:8px;border:2px solid transparent;background:linear-gradient(#bbb,#222);padding:0}
+.thumbs button[aria-pressed=true]{border-color:#000}
+h1{font-family:Cinzel,Cairo,serif;font-weight:600;font-size:26px;line-height:1.25}
+.price{display:flex;gap:10px;align-items:baseline;margin:10px 0;font-size:22px;font-weight:500}
+.price s{color:#888;font-size:16px;font-weight:400}.off{background:#000;color:#fff;border-radius:20px;padding:2px 10px;font-size:13px}
+.stock{font-size:14px;margin-bottom:14px}.ok{color:#176a2f}.no{color:#a11}
+h2{font-size:15px;font-weight:500;margin:16px 0 8px}
+.opts{display:flex;gap:8px;flex-wrap:wrap}
+.sw{width:34px;height:34px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1px #999;padding:0}
+.sw[aria-pressed=true]{box-shadow:0 0 0 2px #000}
+.sz{min-width:48px;height:42px;border:1px solid #999;background:#fff;border-radius:8px;padding:0 12px}
+.sz[aria-pressed=true]{background:#000;color:#fff;border-color:#000}
+.sz:disabled{color:#aaa;background:repeating-linear-gradient(135deg,#fff 0 6px,#eee 6px 7px);cursor:not-allowed;text-decoration:line-through}
+.link{background:none;border:0;text-decoration:underline;font-size:13px;padding:0;margin-top:8px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}td,th{border:1px solid var(--line);padding:6px;text-align:center}
+.qty{display:flex;align-items:center;border:1px solid #999;border-radius:8px;width:fit-content}
+.qty button{width:40px;height:40px;background:none;border:0;font-size:20px}.qty span{min-width:30px;text-align:center}
+.add{width:100%;margin-top:18px;padding:15px;background:#000;color:#fff;border:1px solid #000;border-radius:30px;font-size:16px}
+.add:disabled{background:#bbb;border-color:#bbb;cursor:not-allowed}
+.msg{font-size:13px;color:#a11;min-height:18px;margin-top:6px}
+details{border-top:1px solid var(--line);padding:12px 0;font-size:14px}summary{cursor:pointer;font-weight:500}
+details p{margin-top:8px;color:#444;line-height:1.6}
+.sim{max-width:1100px;margin:0 auto;padding:0 4vw 50px}.sim h3{font-size:20px;margin-bottom:12px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.sc{background:var(--mist);border-radius:10px;overflow:hidden;font-size:13px}.sc i{display:block;aspect-ratio:3/4;background:linear-gradient(#ddd,#555)}.sc p{padding:8px 10px}
+footer{background:var(--ink);color:#bbb;padding:24px 4vw;font-size:13px;display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center}
+footer a{color:#ddd}
+.wa{position:fixed;inset-inline-end:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));background:#1c9b4b;color:#fff;border-radius:30px;padding:12px 18px;text-decoration:none;font-size:14px;z-index:5}
+.dim{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:8}.dim.on{display:block}
+.drawer{position:fixed;top:0;bottom:0;inset-inline-end:0;width:min(440px,100%);background:#fff;z-index:9;padding:calc(18px + env(safe-area-inset-top,0px)) 18px 18px;overflow:auto;transform:translateX(105%);transition:transform .25s}
+[dir=rtl] .drawer{transform:translateX(-105%)}.drawer.on{transform:none!important}
+.steps{display:flex;gap:6px;margin:10px 0 16px;font-size:12px}.steps span{flex:1;border-top:3px solid var(--line);padding-top:4px;color:#888}.steps .on{border-color:#000;color:#000}
+.line{display:flex;justify-content:space-between;gap:10px;padding:8px 0;font-size:14px;border-bottom:1px solid var(--line)}
+label{display:block;font-size:13px;margin:10px 0 4px}
+input,select{width:100%;padding:11px;border:1px solid #999;border-radius:8px}
+.radio{display:flex;gap:10px;align-items:center;border:1px solid #999;border-radius:8px;padding:11px;margin-top:8px;font-size:14px}.radio input{width:auto}
+.tot{font-weight:600;font-size:17px}
+.x{float:inline-end;background:none;border:0;font-size:24px}
+@media(max-width:800px){main{grid-template-columns:1fr}.sg{grid-template-columns:repeat(2,1fr)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+.icons svg{width:26px;height:26px;display:block}.search svg{width:18px;height:18px}.perks .i svg{width:30px;height:30px;display:block}
+@media(max-width:900px){header{grid-template-columns:minmax(0,1fr) auto}.search{min-width:0;width:100%}.search input{min-width:0;width:100%}.icons{gap:14px}}
+@media(max-width:900px){.menu{justify-content:flex-start;padding-inline:16px}}
+</style>
+</head>
+<body>
+<div class="top"><span data-ar="شحن مجاني على الطلبات فوق 2,000 جنيه">Free shipping on orders over 2,000 EGP</span><nav><a href="track.html" data-ar="تتبع الطلب">Track Order</a><a href="#" data-ar="حسابي">My Account</a><button class="pill" id="lang" type="button">العربية</button></nav></div>
+<header>
+  <label class="search"><input type="search" placeholder="Search for products…" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></label>
+  <a class="logo" href="index.html" aria-label="U Women & Kids"><span class="u">U</span><span class="w">WOMEN &amp; KIDS</span><span class="t">WEAR IT. LIVE IT.</span></a>
+  <div class="icons"><button aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button><button aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></button><button class="cartbtn" id="open" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><b id="cnt">0</b></button></div>
+</header>
+<nav class="menu"><a href="index.html" data-ar="الرئيسية">Home</a><a class="on" href="index.html#women-soon" data-ar="حريمي">Women</a><a href="index.html#girls-s" data-ar="أطفال">Kids</a><a href="index.html#new" data-ar="وصل حديثاً">New Arrivals</a><a href="index.html#sale" data-ar="تخفيضات">Sale</a><a href="index.html#about" data-ar="من نحن">About Us</a><a href="policies.html#contact" data-ar="اتصل بنا">Contact Us</a></nav>
+<div class="crumb"><span data-ar="الرئيسية">Home</span> / <span data-ar="حريمي">Women</span> / <span data-ar="فساتين">Dresses</span></div>
+
+<main>
+  <div>
+    <div class="main-img" id="mainimg" style="overflow:hidden"></div>
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+  <div>
+    <h1 id="ptitle"></h1>
+    <div class="price" id="pprice"></div>
+    <div class="stock ok" id="pcode"></div>
+    <h2><span data-ar="اللون">Color</span>: <span id="cn"></span></h2>
+    <div class="opts" id="colors"></div>
+    <h2 data-ar="المقاس">Size</h2>
+    <div class="opts" id="sizes"></div>
+    <a class="link" href="policies.html#size" data-ar="دليل المقاسات" style="display:inline-block;color:inherit">Size guide</a>
+    <h2 data-ar="الكمية">Quantity</h2>
+    <div class="qty"><button id="mn" aria-label="-">−</button><span id="q">1</span><button id="pl" aria-label="+">+</button></div>
+    <button class="add" id="add"></button>
+    <div class="msg" id="msg" role="status"></div>
+    <details><summary data-ar="التوصيل والدفع">Delivery &amp; payment</summary><p data-ar="نهدف لتوصيل الطلب خلال 5 أيام من تأكيده. الشحن مجاني للطلبات فوق 2,000 جنيه، وغير ذلك تظهر رسوم التوصيل عند إتمام الطلب. الدفع عبر إنستاباي أو عند الاستلام.">We aim to deliver within 5 days of order confirmation. Free shipping on orders over EGP 2,000; otherwise the delivery fee is shown at checkout. Pay by InstaPay or cash on delivery.</p></details>
+  </div>
+</main>
+
+<section class="sim"><h3 data-ar="منتجات مشابهة">You may also like</h3><div class="sg" id="simgrid"></div></section>
+
+<footer><a href="policies.html#shipping" data-ar="سياسة الشحن">Shipping</a><a href="policies.html#returns" data-ar="الاسترجاع والاستبدال">Returns &amp; refunds</a><a href="policies.html#payment" data-ar="الدفع">Payment</a><a href="policies.html#privacy" data-ar="الخصوصية">Privacy</a><a href="policies.html#terms" data-ar="الشروط والأحكام">Terms</a><a href='https://www.instagram.com/ujeans.2026' target='_blank' rel='noopener'>Instagram</a><a href='https://www.tiktok.com/@u.jeans6' target='_blank' rel='noopener'>TikTok</a><a href='https://www.facebook.com/share/1EyHCnT64Z/' target='_blank' rel='noopener'>Facebook</a></footer>
+<a class="wa" href="#" data-ar="تواصل واتساب">WhatsApp us</a>
+
+
+
+<script>
+(function(){
+var CAT=(window.CATALOG&&CATALOG.products)||[],ORDER_NUM='201101192118';
+var ar=false,cur=null,ci=0,ii=0,size=null,qty=1;
+var $=function(i){return document.getElementById(i)};
+var T=function(e,a){return ar?a:e};
+var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
+var money=function(n){return Number(n).toLocaleString('en-US')+(ar?' جنيه':' EGP')};
+var code=new URLSearchParams(location.search).get('code');
+cur=CAT.filter(function(p){return p.code===code})[0]||CAT[0];
+function tr(){
+  document.querySelectorAll('[data-ar]').forEach(function(e){if(!e.dataset.en)e.dataset.en=e.innerHTML;e.innerHTML=ar?e.dataset.ar:e.dataset.en});
+  document.documentElement.lang=ar?'ar':'en';document.documentElement.dir=ar?'rtl':'ltr';
+  $('lang').textContent=ar?'English':'العربية';
+  var si=document.querySelector('.search input');if(si)si.placeholder=ar?'ابحث عن المنتجات…':'Search for products…';
+  render();
+}
+function render(){
+  var p=cur,c=p.colors[ci],nm=ar?p.name.ar:p.name.en;
+  document.title=nm+' – '+p.code+' | U-MODA';
+  $('ptitle').textContent=nm+' – '+p.code;
+  $('pprice').innerHTML=p.price==null?'<span style="font-size:16px;font-weight:400">'+T('Price on WhatsApp','السعر على واتساب')+'</span>':'<span>'+money(p.price)+'</span>'+(p.old?'<s>'+money(p.old)+'</s>':'');
+  $('pcode').textContent=T('Code ','كود ')+p.code+' · '+T('Sizes: ','المقاسات: ')+p.sizes.join(' - ');
+  $('cn').textContent=ar?c.name.ar:c.name.en;
+  $('colors').innerHTML='';
+  p.colors.forEach(function(k,i){var b=document.createElement('button');b.className='sw';b.style.background=k.hex;b.setAttribute('aria-pressed',i===ci);b.setAttribute('aria-label',ar?k.name.ar:k.name.en);b.onclick=function(){ci=i;ii=0;render()};$('colors').appendChild(b)});
+  $('sizes').innerHTML='';
+  p.sizes.forEach(function(z){var b=document.createElement('button');b.className='sz';b.textContent=z;b.setAttribute('aria-pressed',size===z);b.onclick=function(){size=z;$('msg').textContent='';render()};$('sizes').appendChild(b)});
+  $('mainimg').innerHTML='<img src="'+esc(c.imgs[ii])+'" alt="'+esc(nm)+'" style="width:100%;height:100%;object-fit:cover;display:block">';
+  $('thumbs').innerHTML='';
+  c.imgs.forEach(function(u,i){var b=document.createElement('button');b.setAttribute('aria-label','Photo '+(i+1));b.setAttribute('aria-pressed',i===ii);b.style.background='url('+u+') center 22%/cover';b.onclick=function(){ii=i;render()};$('thumbs').appendChild(b)});
+  $('q').textContent=qty;
+  $('add').textContent=p.price==null?T('Order on WhatsApp','اطلب عبر واتساب'):T('Add to cart','أضف إلى السلة');
+  var sim=CAT.filter(function(x){return x.code!==p.code}).sort(function(a,b){return (b.group===p.group)-(a.group===p.group)}).slice(0,4);
+  $('simgrid').innerHTML=sim.map(function(x){return'<a class="sc" href="product.html?code='+x.code+'" style="text-decoration:none;color:inherit"><i style="background:url('+x.colors[0].imgs[0]+') center 22%/cover"></i><p>'+esc((ar?x.name.ar:x.name.en)+' – '+x.code)+'</p></a>'}).join('');
+  if(window.UCart)UCart.refresh();
+}
+$('mn').onclick=function(){qty=Math.max(1,qty-1);render()};
+$('pl').onclick=function(){qty=Math.min(10,qty+1);render()};
+$('add').onclick=function(){
+  if(!size){$('msg').textContent=T('Please choose a size','من فضلك اختر المقاس');return}
+  var c=cur.colors[ci];
+  if(cur.price==null){
+    var m='مرحباً، عايز أطلب من U-MODA:\n'+cur.name.ar+' - كود '+cur.code+'\nاللون: '+c.name.ar+'\nالمقاس: '+size+'\nالكمية: '+qty+'\nممكن السعر والتفاصيل؟';
+    var url='https://wa.me/'+ORDER_NUM+'?text='+encodeURIComponent(m);
+    if(!window.open(url,'_blank'))location.href=url;return}
+  UCart.add({id:'p-'+cur.code,name:{en:cur.name.en+' – '+cur.code,ar:cur.name.ar+' – '+cur.code},price:cur.price,color:c.name.ar,size:size,qty:qty});
+  $('msg').textContent='';UCart.open();
+};
+$('lang').onclick=function(){ar=!ar;try{localStorage.setItem('u-lang',ar?'ar':'en')}catch(e){}tr()};
+try{if(localStorage.getItem('u-lang')==='ar')ar=true}catch(e){}
+tr();
+})();
+</script>
+<script>
+/* ===== STORE CONFIG =====
+   Put the customer-service WhatsApp number here: international format, digits only, no "+"
+   Example for Egypt: 2010XXXXXXXX. While empty, the WhatsApp button stays hidden. */
+var WHATSAPP_LINK='https://wa.me/message/ZNZJ4ZXATRCQA1'; /* your WhatsApp Business link; clear it to use a number instead */
+var WHATSAPP_NUMBER='';
+(function(){
+  var ok=!!WHATSAPP_LINK||/^\d{10,15}$/.test(WHATSAPP_NUMBER);
+  document.querySelectorAll('a.wa').forEach(function(a){
+    if(!ok){a.style.display='none';return}
+    a.href=WHATSAPP_LINK||('https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent('Hello U Women & Kids, I have a question.'));
+    a.target='_blank';a.rel='noopener';
+  });
+})();
+</script>
+<script src="config.js"></script>
+<script src="cart.js"></script>
+</body>
+</html>
