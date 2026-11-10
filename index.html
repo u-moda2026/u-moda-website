@@ -134,7 +134,7 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margi
 <header>
   <label class="search"><input type="search" placeholder="Search for products…" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></label>
   <a class="logo" href="index.html" aria-label="U Women & Kids"><span class="u">U</span><span class="w">WOMEN &amp; KIDS</span><span class="t">WEAR IT. LIVE IT.</span></a>
-  <div class="icons"><button aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button><button aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></button><button aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="cnt">0</span></button></div>
+  <div class="icons"><button aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button><button aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></button><button class="cartbtn" id="open" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><span class="badge" id="cnt">0</span></button></div>
 </header>
 <nav class="menu"><a class="on" href="index.html">Home</a><a href="#women-soon">Women</a><a href="#girls-s">Kids</a><a href="#new">New Arrivals</a><a href="new-collection.html">New Collection 2027</a><a href="#sale">Sale</a><a href="#about">About Us</a><a href="policies.html#contact">Contact Us</a></nav>
 
@@ -199,7 +199,7 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margi
 <script>
 (function(){
   var n=0,c=document.getElementById('cnt');
-  document.querySelectorAll('.add').forEach(function(b){b.addEventListener('click',function(){n++;c.textContent=n;b.textContent='Added';window.applyLang();setTimeout(function(){b.textContent='Add to cart';window.applyLang()},1200)})});
+  
   document.querySelectorAll('.fav').forEach(function(b){b.addEventListener('click',function(){var on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',String(!on));b.textContent=on?'♡':'♥'})});
 })();
 </script>
@@ -238,7 +238,7 @@ document.getElementById('lang').addEventListener('click',render);
 render();
 })();
 </script>
-<script>document.addEventListener("click",function(e){var c=e.target.closest(".card .img,.card b");if(c)location.href="product.html?code="+c.closest(".card").dataset.code});</script>
+<script>document.addEventListener("click",function(e){var c=e.target.closest(".card .img,.card b,.card .add");if(c)location.href="product.html?code="+c.closest(".card").dataset.code});</script>
 <script>
 /* ===== STORE CONFIG =====
    Put the customer-service WhatsApp number here: international format, digits only, no "+"
