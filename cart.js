@@ -198,3 +198,50 @@ new MutationObserver(function(){if(dr.classList.contains('on'))draw()}).observe(
 window.UCart={add:add,open:function(){step='cart';open()},refresh:refresh,count:count,_t:{totals:totals,buildMsg:buildMsg,validPhone:validPhone,CFG:CFG}};
 refresh();
 })();
+
+/* ===== UM_HOME_FAILSAFE: لو الصفحة الرئيسية لسه قديمة، الكود ده يعرض الـ44 منتج من products.js تلقائياً ===== */
+(function(){
+  if(typeof PRODUCTS!=='undefined'||!document.getElementById('cols'))return;
+  try{var nl=document.querySelector('.menu a[href="#new"]');if(nl)nl.setAttribute('href','new-collection.html')}catch(e){}
+  var s=document.createElement('script');
+  s.src='products.js?v='+Date.now();
+  s.onload=function(){
+
+/* ===== STORE DATA: add a collection = add one object to "collections" =====
+   item: [English name, Arabic name, price, old price (0 = none), tag ("Sale"/"New"/""), photo gradient or photo URL] */
+(function(){
+var CATS=[['suit-girls','girls-s',['Girls Suits','سوت بناتي']],['suit-boys','boys',['Boys Suits','سوت أولاد']],['hoodie','hoodies',['Hoodies','هودي']],['sweatshirt','sweatshirts',['Sweatshirts','سويت شيرت']],['jacket','jackets',['Jackets','جاكيت']],['tops','tops',['Tops','بلوفر / توب']],['pants','pants',['Pants','بناطيل']]];
+var STORE={collections:CATS.map(function(c){var items=(window.CATALOG?CATALOG.products:[]).filter(function(p){return p.group===c[0]}).map(function(p){return [p.name.en+' \u2013 '+p.code,p.name.ar+' \u2013 '+p.code,p.price,0,'New',p.colors[0].imgs[0],p.code]});return {id:c[1],title:c[2],items:items}}).filter(function(c){return c.items.length})};
+var timers=[],reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+function fmt(n,ar){return n.toLocaleString('en-US')+(ar?' \u062c\u0646\u064a\u0647':' EGP')}
+function card(it,ar){
+ var tag=it[4]?'<span class="tag">'+(ar?(it[4]==='Sale'?'\u062a\u062e\u0641\u064a\u0636':'\u062c\u062f\u064a\u062f'):it[4])+'</span>':'';
+ var ph=/^(?:https?:|data:)|\.(?:jpe?g|png|webp|gif)$/i.test(it[5])?'background:#eee url('+it[5]+') center 22%/cover':'background:linear-gradient('+it[5]+')';
+ return '<article class="card" data-code="'+it[6]+'">'+tag+'<button class="fav" aria-pressed="false" aria-label="Wishlist">\u2661</button><div class="img" style="'+ph+'">'+(/^(?:https?:|data:)|\.(?:jpe?g|png|webp|gif)$/i.test(it[5])?'':(ar?'\u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u0646\u062a\u062c':'Product photo'))+'</div><div class="info"><b>'+it[ar?1:0]+'</b><span class="p">'+(it[3]?'<s>'+fmt(it[3],ar)+'</s>':'')+(it[2]==null?(ar?'اسأل عن السعر':'Ask for price'):fmt(it[2],ar))+'</span><button class="add">'+(ar?'اختر المقاس':'Choose size')+'</button></div></article>'}
+function render(){
+ var ar=document.documentElement.lang==='ar',root=document.getElementById('cols');
+ timers.forEach(clearInterval);timers=[];root.innerHTML='';
+ STORE.collections.forEach(function(c){
+  var d=document.createElement('div');d.className='col';d.id=c.id;
+  d.innerHTML='<h3>'+c.title[ar?1:0]+'</h3><div class="slider"><button class="arr a1" aria-label="Previous">\u2039</button><div class="track">'+c.items.map(function(i){return card(i,ar)}).join('')+'</div><button class="arr a2" aria-label="Next">\u203a</button></div>';
+  root.appendChild(d);
+  var t=d.querySelector('.track'),paused=false,rtl=ar;
+  function stepW(){var k=t.children[0];return k?k.offsetWidth+14:300}
+  function by(dir){t.scrollBy({left:dir*stepW()})}
+  function auto(){var max=t.scrollWidth-t.clientWidth;if(Math.abs(t.scrollLeft)>=max-4)t.scrollTo({left:0});else by(rtl?-1:1)}
+  d.querySelector('.a1').onclick=function(){by(-1)};d.querySelector('.a2').onclick=function(){by(1)};
+  var rs;function hold(){paused=true;clearTimeout(rs)}function go(){clearTimeout(rs);rs=setTimeout(function(){paused=false},3000)}
+  ['pointerenter','focusin','touchstart'].forEach(function(e){d.addEventListener(e,hold,{passive:true})});
+  ['pointerleave','focusout','touchend'].forEach(function(e){d.addEventListener(e,go,{passive:true})});
+  if(!reduce)timers.push(setInterval(function(){if(!paused)auto()},3800));
+  d.querySelectorAll('.add').forEach(function(b){b.onclick=function(){location.href='product.html?code='+b.closest('.card').dataset.code}});
+  d.querySelectorAll('.fav').forEach(function(b){b.onclick=function(){var on=b.getAttribute('aria-pressed')==='true';b.setAttribute('aria-pressed',String(!on));b.textContent=on?'\u2661':'\u2665'}});
+ });
+}
+document.getElementById('lang').addEventListener('click',render);
+render();
+})();
+
+  };
+  document.head.appendChild(s);
+})();
