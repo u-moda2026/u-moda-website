@@ -34,6 +34,7 @@ header{background:var(--ink);color:#fff;display:grid;grid-template-columns:1fr a
 .cartbtn{position:relative;background:none;border:0;color:#fff;font-size:22px}
 .cartbtn b{position:absolute;top:-6px;inset-inline-end:-10px;background:#fff;color:#000;border-radius:50%;width:17px;height:17px;font-size:10px;display:grid;place-items:center}
 .crumb{padding:12px 4vw;font-size:13px;color:#666}
+.crumb a{color:inherit;text-decoration:none}
 main{display:grid;grid-template-columns:1.1fr 1fr;gap:34px;padding:0 4vw 40px;max-width:1100px;margin:auto}
 .main-img{aspect-ratio:3/4;border-radius:12px;display:grid;place-items:center;color:#777;font-size:13px;background:linear-gradient(#cfcfcf,#111)}
 .thumbs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
@@ -89,8 +90,8 @@ input,select{width:100%;padding:11px;border:1px solid #999;border-radius:8px}
   <a class="logo" href="index.html" aria-label="U Women & Kids"><span class="u">U</span><span class="w">WOMEN &amp; KIDS</span><span class="t">WEAR IT. LIVE IT.</span></a>
   <div class="icons"><button aria-label="Account"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></button><button aria-label="Wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></button><button class="cartbtn" id="open" aria-label="Cart"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg><b id="cnt">0</b></button></div>
 </header>
-<nav class="menu"><a href="index.html" data-ar="الرئيسية">Home</a><a class="on" href="index.html#women-soon" data-ar="حريمي">Women</a><a href="index.html#girls-s" data-ar="أطفال">Kids</a><a href="index.html#new" data-ar="وصل حديثاً">New Arrivals</a><a href="index.html#sale" data-ar="تخفيضات">Sale</a><a href="index.html#about" data-ar="من نحن">About Us</a><a href="policies.html#contact" data-ar="اتصل بنا">Contact Us</a></nav>
-<div class="crumb"><span data-ar="الرئيسية">Home</span> / <span data-ar="حريمي">Women</span> / <span data-ar="فساتين">Dresses</span></div>
+<nav class="menu"><a href="index.html" data-ar="الرئيسية">Home</a><a href="index.html#women-soon" data-ar="حريمي">Women</a><a class="on" href="index.html#girls-s" data-ar="أطفال">Kids</a><a href="new-collection.html" data-ar="وصل حديثاً">New Arrivals</a><a href="index.html#sale" data-ar="تخفيضات">Sale</a><a href="index.html#about" data-ar="من نحن">About Us</a><a href="policies.html#contact" data-ar="اتصل بنا">Contact Us</a></nav>
+<div class="crumb"><a href="index.html" data-ar="الرئيسية">Home</a> / <a href="index.html#girls-s" data-ar="أطفال">Kids</a> / <a href="new-collection.html" data-ar="الكوليكشن الجديد 2027">New Collection 2027</a></div>
 
 <main>
   <div>
@@ -120,17 +121,22 @@ input,select{width:100%;padding:11px;border:1px solid #999;border-radius:8px}
 <a class="wa" href="#" data-ar="تواصل واتساب">WhatsApp us</a>
 
 
-
+<!-- الموديلات كلها بتيجي من products.js (نفس الملف اللي الصفحة الرئيسية بتقرا منه). مفيش قائمة موديلات جوه الصفحة دي. -->
+<script src="products.js"></script>
 <script>
 (function(){
-var CAT=[{"code": "8553", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 675, "old": 0, "colors": [{"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8553-black-1.jpg", "8553-black-2.jpg", "8553-black-3.jpg"]}, {"name": {"en": "Cream", "ar": "كريمي"}, "hex": "#efe6d2", "imgs": ["8553-cream-1.jpg", "8553-cream-2.jpg"]}]}, {"code": "8563", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 675, "old": 0, "colors": [{"name": {"en": "Purple", "ar": "بنفسجي"}, "hex": "#6b3fa0", "imgs": ["8563-purple-1.jpg", "8563-purple-2.jpg"]}, {"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8563-pink-1.jpg"]}]}, {"code": "8562", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 675, "old": 0, "colors": [{"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8562-pink-1.jpg"]}, {"name": {"en": "Purple", "ar": "بنفسجي"}, "hex": "#6b3fa0", "imgs": ["8562-purple-1.jpg", "8562-purple-2.jpg"]}]}, {"code": "8560", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 675, "old": 0, "colors": [{"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8560-pink-1.jpg", "8560-pink-2.jpg"]}, {"name": {"en": "Purple", "ar": "بنفسجي"}, "hex": "#6b3fa0", "imgs": ["8560-purple-1.jpg"]}]}, {"code": "8559", "name": {"en": "Girls' Hoodie", "ar": "هودي بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 550, "old": 0, "colors": [{"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8559-pink-1.jpg"]}]}, {"code": "8561", "name": {"en": "Girls' Hoodie", "ar": "هودي بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 550, "old": 0, "colors": [{"name": {"en": "Purple", "ar": "بنفسجي"}, "hex": "#6b3fa0", "imgs": ["8561-purple-1.jpg", "8561-purple-2.jpg"]}, {"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8561-pink-1.jpg", "8561-pink-2.jpg"]}]}, {"code": "8565", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["2", "3", "4", "5"], "group": "girls-s", "price": 675, "old": 0, "colors": [{"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8565-black-1.jpg"]}, {"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["8565-pink-1.jpg"]}]}, {"code": "8923", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Lavender", "ar": "لافندر"}, "hex": "#b9a6e0", "imgs": ["8923-lavender-1.jpg"]}, {"name": {"en": "Cream", "ar": "كريمي"}, "hex": "#efe6d2", "imgs": ["8923-cream-1.jpg", "8923-cream-2.jpg"]}]}, {"code": "8922", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8922-black-1.jpg"]}]}, {"code": "8927", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Beige", "ar": "بيج"}, "hex": "#d9c6a8", "imgs": ["8927-beige-1.jpg"]}, {"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8927-black-1.jpg", "8927-black-2.jpg"]}]}, {"code": "9834", "name": {"en": "Girls' Zip Jacket & Pants Set", "ar": "طقم جاكيت بسوستة وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Pink", "ar": "وردي"}, "hex": "#e89ab5", "imgs": ["9834-pink-1.jpg", "9834-pink-2.jpg"]}, {"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["9834-black-1.jpg", "9834-black-2.jpg"]}]}, {"code": "8936", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Beige", "ar": "بيج"}, "hex": "#d9c6a8", "imgs": ["8936-beige-1.jpg", "8936-beige-2.jpg"]}, {"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8936-black-1.jpg", "8936-black-2.jpg"]}]}, {"code": "8938", "name": {"en": "Girls' Sweatshirt", "ar": "سويت شيرت بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 550, "old": 0, "colors": [{"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8938-black-1.jpg"]}, {"name": {"en": "Cream", "ar": "كريمي"}, "hex": "#efe6d2", "imgs": ["8938-cream-1.jpg", "8938-cream-2.jpg"]}]}, {"code": "8950", "name": {"en": "Girls' Hoodie & Pants Set", "ar": "طقم هودي وبنطلون بناتي"}, "sizes": ["6", "8", "10", "12"], "group": "girls-l", "price": 675, "old": 0, "colors": [{"name": {"en": "Black", "ar": "أسود"}, "hex": "#111111", "imgs": ["8950-black-1.jpg"]}, {"name": {"en": "Purple", "ar": "بنفسجي"}, "hex": "#6b3fa0", "imgs": ["8950-purple-1.jpg", "8950-purple-2.jpg"]}]}, {"code": "1922", "name": {"en": "Boys' Sweatshirt & Pants Set", "ar": "طقم سويت شيرت وبنطلون ولادي"}, "sizes": ["1", "2", "3"], "group": "boys", "price": 675, "old": 0, "colors": [{"name": {"en": "As shown", "ar": "كما بالصورة"}, "hex": "#cfcfcf", "imgs": ["1922-shown-1.jpg"]}]}, {"code": "1924", "name": {"en": "Boys' Sweatshirt & Pants Set", "ar": "طقم سويت شيرت وبنطلون ولادي"}, "sizes": ["1", "2", "3"], "group": "boys", "price": 675, "old": 0, "colors": [{"name": {"en": "As shown", "ar": "كما بالصورة"}, "hex": "#cfcfcf", "imgs": ["1924-shown-1.jpg"]}]}],ORDER_NUM='201101192118';
+var CAT=(window.CATALOG&&CATALOG.products)||[],ORDER_NUM='201101192118';
 var ar=false,cur=null,ci=0,ii=0,size=null,qty=1;
 var $=function(i){return document.getElementById(i)};
 var T=function(e,a){return ar?a:e};
 var esc=function(s){return String(s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})};
 var money=function(n){return Number(n).toLocaleString('en-US')+(ar?' جنيه':' EGP')};
-var code=new URLSearchParams(location.search).get('code');
-cur=CAT.filter(function(p){return p.code===code})[0]||CAT[0];
+var GENDER={girls:['Girls','بناتي'],boys:['Boys','أولادي'],both:['Girls & boys','بناتي وأولادي']};
+var code=(new URLSearchParams(location.search).get('code')||'').trim();
+cur=CAT.filter(function(p){return String(p.code)===code})[0];
+/* لو الكود مش موجود في الكوليكشن: ارجع للرئيسية بدل ما يتعرض موديل تاني غلط */
+if(!cur){location.replace('index.html');return}
+function sizesOf(){return cur.colors[ci].sizes||cur.sizes}
 function tr(){
   document.querySelectorAll('[data-ar]').forEach(function(e){if(!e.dataset.en)e.dataset.en=e.innerHTML;e.innerHTML=ar?e.dataset.ar:e.dataset.en});
   document.documentElement.lang=ar?'ar':'en';document.documentElement.dir=ar?'rtl':'ltr';
@@ -139,23 +145,25 @@ function tr(){
   render();
 }
 function render(){
-  var p=cur,c=p.colors[ci],nm=ar?p.name.ar:p.name.en;
+  var p=cur,c=p.colors[ci],nm=ar?p.name.ar:p.name.en,zs=sizesOf(),g=GENDER[p.gender];
   document.title=nm+' – '+p.code+' | U-MODA';
   $('ptitle').textContent=nm+' – '+p.code;
   $('pprice').innerHTML=p.price==null?'<span style="font-size:16px;font-weight:400">'+T('Price on WhatsApp','السعر على واتساب')+'</span>':'<span>'+money(p.price)+'</span>'+(p.old?'<s>'+money(p.old)+'</s>':'');
-  $('pcode').textContent=T('Code ','كود ')+p.code+' · '+T('Sizes: ','المقاسات: ')+p.sizes.join(' - ');
+  $('pcode').textContent=T('Code ','كود ')+p.code+(g?' · '+T(g[0],g[1]):'')+' · '+T('Sizes: ','المقاسات: ')+zs.join(' - ');
   $('cn').textContent=ar?c.name.ar:c.name.en;
   $('colors').innerHTML='';
-  p.colors.forEach(function(k,i){var b=document.createElement('button');b.className='sw';b.style.background=k.hex;b.setAttribute('aria-pressed',i===ci);b.setAttribute('aria-label',ar?k.name.ar:k.name.en);b.onclick=function(){ci=i;ii=0;render()};$('colors').appendChild(b)});
+  p.colors.forEach(function(k,i){var b=document.createElement('button');b.className='sw';b.style.background=k.hex;b.setAttribute('aria-pressed',i===ci);b.setAttribute('aria-label',ar?k.name.ar:k.name.en);b.onclick=function(){ci=i;ii=0;if(sizesOf().indexOf(size)<0)size=null;render()};$('colors').appendChild(b)});
   $('sizes').innerHTML='';
-  p.sizes.forEach(function(z){var b=document.createElement('button');b.className='sz';b.textContent=z;b.setAttribute('aria-pressed',size===z);b.onclick=function(){size=z;$('msg').textContent='';render()};$('sizes').appendChild(b)});
+  zs.forEach(function(z){var b=document.createElement('button');b.className='sz';b.textContent=z;b.setAttribute('aria-pressed',size===z);b.onclick=function(){size=z;$('msg').textContent='';render()};$('sizes').appendChild(b)});
   $('mainimg').innerHTML='<img src="'+esc(c.imgs[ii])+'" alt="'+esc(nm)+'" style="width:100%;height:100%;object-fit:cover;display:block">';
   $('thumbs').innerHTML='';
   c.imgs.forEach(function(u,i){var b=document.createElement('button');b.setAttribute('aria-label','Photo '+(i+1));b.setAttribute('aria-pressed',i===ii);b.style.background='url('+u+') center 22%/cover';b.onclick=function(){ii=i;render()};$('thumbs').appendChild(b)});
   $('q').textContent=qty;
   $('add').textContent=p.price==null?T('Order on WhatsApp','اطلب عبر واتساب'):T('Add to cart','أضف إلى السلة');
-  var sim=CAT.filter(function(x){return x.code!==p.code}).sort(function(a,b){return (b.group===p.group)-(a.group===p.group)}).slice(0,4);
-  $('simgrid').innerHTML=sim.map(function(x){return'<a class="sc" href="product.html?code='+x.code+'" style="text-decoration:none;color:inherit"><i style="background:url('+x.colors[0].imgs[0]+') center 22%/cover"></i><p>'+esc((ar?x.name.ar:x.name.en)+' – '+x.code)+'</p></a>'}).join('');
+  /* منتجات مشابهة: نفس النوع (بناتي/أولادي) ونفس السن الأول */
+  var score=function(x){var s=0;if(x.gender===p.gender||x.gender==='both'||p.gender==='both')s+=4;if((x.ages||[]).some(function(a){return (p.ages||[]).indexOf(a)>=0}))s+=2;if(x.group===p.group)s+=1;return s};
+  var sim=CAT.filter(function(x){return x.code!==p.code}).sort(function(a,b){return score(b)-score(a)}).slice(0,4);
+  $('simgrid').innerHTML=sim.map(function(x){return'<a class="sc" href="product.html?code='+encodeURIComponent(x.code)+'" style="text-decoration:none;color:inherit"><i style="background:url('+x.colors[0].imgs[0]+') center 22%/cover"></i><p>'+esc((ar?x.name.ar:x.name.en)+' – '+x.code)+'</p></a>'}).join('');
   if(window.UCart)UCart.refresh();
 }
 $('mn').onclick=function(){qty=Math.max(1,qty-1);render()};

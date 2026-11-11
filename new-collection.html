@@ -12,9 +12,12 @@ body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Tahoma,sans-serif;b
 header{padding:20px 16px 8px;text-align:center}
 header h1{margin:0;font-size:22px}
 header p{margin:6px 0 0;color:var(--muted);font-size:14px}
-.filters{display:flex;gap:8px;overflow-x:auto;padding:12px 16px;position:sticky;top:0;background:var(--bg);z-index:5}
+.bar{position:sticky;top:0;background:var(--bg);z-index:5;padding:6px 0}
+.filters{display:flex;gap:8px;overflow-x:auto;padding:5px 16px}
 .filters button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:20px;font-size:14px;cursor:pointer}
 .filters button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.count{padding:2px 16px 0;color:var(--muted);font-size:13px;max-width:1100px;margin:auto}
+.empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:30px 10px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:8px 12px 40px;max-width:1100px;margin:auto}
 @media(min-width:700px){.grid{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:1000px){.grid{grid-template-columns:repeat(4,1fr)}}
@@ -35,56 +38,96 @@ header p{margin:6px 0 0;color:var(--muted);font-size:14px}
   <h1>الكوليكشن الجديد 2027</h1>
   <p>U Women & Kids</p>
 </header>
-<div class="filters" id="filters"></div>
+<div class="bar">
+  <div class="filters" id="fGender"></div>
+  <div class="filters" id="fAge"></div>
+  <div class="filters" id="filters"></div>
+</div>
+<div class="count" id="count"></div>
 <div class="grid" id="grid"></div>
 
 <script src="products.js"></script>
 <script>
 const WHATSAPP = "201101192118";
-const CATS = {all:"الكل","suit-girls":"سوت بناتي","suit-boys":"سوت أولاد",hoodie:"هودي",sweatshirt:"سويت شيرت",jacket:"جاكيت",pants:"بناطيل",tops:"بلوفر / توب"};
-let current = "all";
+const GENDERS = {all:"الكل",girls:"بناتي",boys:"أولادي"};
+const AGES = {all:"كل السن",kids:"أطفال (حتى 6)",teen:"محير (8-16)"};
+const CATS = {all:"كل الأنواع","suit-girls":"سوت بناتي","suit-boys":"سوت أولاد",hoodie:"هودي",sweatshirt:"سويت شيرت",jacket:"جاكيت",pants:"بناطيل",tops:"بلوفر / توب"};
+const G_NAME = {girls:"بناتي",boys:"أولادي",both:"بناتي وأولادي"};
+const A_NAME = {kids:"أطفال",teen:"محير"};
+let gender = "all", age = "all", current = "all";
 
-function renderFilters(){
-  const el = document.getElementById("filters");
+/* الموديل بيظهر لو مطابق للنوع والسن المختارين (الموديل اللي للاتنين بيظهر في بناتي وفي أولادي) */
+function matchGA(p){
+  return (gender==="all" || p.gender===gender || p.gender==="both") &&
+         (age==="all" || (p.ages||[]).includes(age));
+}
+
+function row(id, map, value, pick, show){
+  const el = document.getElementById(id);
   el.innerHTML = "";
-  Object.keys(CATS).forEach(k=>{
-    if(k!=="all" && !PRODUCTS.some(p=>p.cat===k)) return;
+  Object.keys(map).forEach(k=>{
+    if(show && !show(k)) return;
     const b = document.createElement("button");
-    b.textContent = CATS[k];
-    b.className = k===current ? "on" : "";
-    b.onclick = ()=>{ current = k; renderFilters(); renderGrid(); };
+    b.textContent = map[k];
+    b.className = k===value ? "on" : "";
+    b.onclick = ()=>{ pick(k); renderFilters(); renderGrid(); };
     el.appendChild(b);
   });
+}
+
+function renderFilters(){
+  /* لو النوع المختار مابقاش موجود مع النوع/السن الجديد، ارجع لـ "كل الأنواع" */
+  if(current!=="all" && !PRODUCTS.some(p=>p.cat===current && matchGA(p))) current = "all";
+  row("fGender", GENDERS, gender, k=>{ gender = k; });
+  row("fAge", AGES, age, k=>{ age = k; });
+  row("filters", CATS, current, k=>{ current = k; }, k=> k==="all" || PRODUCTS.some(p=>p.cat===k && matchGA(p)));
 }
 
 function renderGrid(){
   const g = document.getElementById("grid");
   g.innerHTML = "";
-  PRODUCTS.filter(p=>current==="all"||p.cat===current).forEach(p=>{
+  const list = PRODUCTS.filter(p=>matchGA(p) && (current==="all"||p.cat===current));
+  document.getElementById("count").textContent = list.length ? list.length + " موديل" : "";
+  if(!list.length){
+    g.innerHTML = '<div class="empty">مفيش موديلات بالاختيار ده. جرّب تغيّر النوع أو السن.</div>';
+    return;
+  }
+  list.forEach(p=>{
     const card = document.createElement("div");
     card.className = "card";
+    card.id = "m-" + p.code;
     const main = document.createElement("img");
-    main.className = "main"; main.loading = "lazy"; main.alt = p.title; main.src = p.images[0];
+    main.className = "main"; main.loading = "lazy"; main.alt = p.title + " كود " + p.code; main.src = p.images[0];
     card.appendChild(main);
+    const info = document.createElement("div"); info.className = "info";
+    const link = document.createElement("a");
+    link.className = "order"; link.target = "_blank"; link.rel = "noopener"; link.textContent = "اطلب على واتساب";
+    /* رسالة الطلب فيها لون الصورة المختارة */
+    const setMsg = i=>{
+      const pic = (p.imageColors && p.imageColors[i]) ? " - اللون: " + p.imageColors[i] : "";
+      link.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("أهلاً، عايز أطلب: " + p.title + " - كود " + p.code + pic + " - السعر " + p.price + " ج.م");
+    };
+    setMsg(0);
     if(p.images.length>1){
       const th = document.createElement("div"); th.className = "thumbs";
       p.images.forEach((src,i)=>{
-        const t = document.createElement("img"); t.src = src; t.loading = "lazy"; t.alt = "";
+        const t = document.createElement("img"); t.src = src; t.loading = "lazy"; t.alt = "صورة " + (i+1);
         if(i===0) t.className = "on";
-        t.onclick = ()=>{ main.src = src; th.querySelectorAll("img").forEach(x=>x.classList.remove("on")); t.classList.add("on"); };
+        t.onclick = ()=>{ main.src = src; th.querySelectorAll("img").forEach(x=>x.classList.remove("on")); t.classList.add("on"); setMsg(i); };
         th.appendChild(t);
       });
       card.appendChild(th);
     }
-    const info = document.createElement("div"); info.className = "info";
-    const msg = encodeURIComponent("أهلاً، عايز أطلب: " + p.title + " - كود " + p.code + " - السعر " + p.price + " ج.م");
+    const ages = (p.ages||[]).map(a=>A_NAME[a]).join(" / ");
     info.innerHTML =
       '<div class="t"></div>' +
       '<div class="m">كود: ' + p.code + '</div>' +
+      '<div class="m">' + G_NAME[p.gender] + (ages ? ' - ' + ages : '') + '</div>' +
       '<div class="m">المقاسات: ' + p.sizes + '</div>' +
-      '<div class="p">' + p.price + ' ج.م</div>' +
-      '<a class="order" target="_blank" rel="noopener" href="https://wa.me/' + WHATSAPP + '?text=' + msg + '">اطلب على واتساب</a>';
-    info.querySelector(".t").textContent = p.title;
+      '<div class="p">' + p.price + ' ج.م</div>';
+    info.querySelector(".t").innerHTML = '<a href="product.html?code=' + encodeURIComponent(p.code) + '" style="color:inherit;text-decoration:none"></a>';
+    info.querySelector(".t a").textContent = p.title;
+    info.appendChild(link);
     card.appendChild(info);
     g.appendChild(card);
   });
