@@ -16,6 +16,13 @@ header p{margin:6px 0 0;color:var(--muted);font-size:14px}
 .filters{display:flex;gap:8px;overflow-x:auto;padding:5px 16px}
 .filters button{flex:none;border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 14px;border-radius:20px;font-size:14px;cursor:pointer}
 .filters button.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.nav{display:flex;justify-content:space-between;gap:12px;padding:12px 16px 0;font-size:14px;max-width:1100px;margin:auto}
+.nav a{color:var(--text);text-decoration:none;border:1px solid var(--line);background:var(--card);padding:6px 14px;border-radius:20px}
+.card{position:relative}
+.main{cursor:pointer}
+.heart{position:absolute;top:8px;left:8px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:#222;font-size:19px;line-height:1;cursor:pointer}
+.heart[aria-pressed="true"]{color:#c00}
+.q{display:block;width:calc(100% - 32px);max-width:480px;margin:10px auto 0;padding:10px 14px;border:1px solid var(--line);border-radius:20px;background:var(--card);color:var(--text);font:inherit;font-size:15px}
 .count{padding:2px 16px 0;color:var(--muted);font-size:13px;max-width:1100px;margin:auto}
 .empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:30px 10px}
 .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;padding:8px 12px 40px;max-width:1100px;margin:auto}
@@ -34,9 +41,11 @@ header p{margin:6px 0 0;color:var(--muted);font-size:14px}
 </style>
 </head>
 <body>
+<nav class="nav"><a href="index.html">الرئيسية</a><a href="new-collection.html?fav=1" id="favLink">♡ المفضلة</a></nav>
 <header>
-  <h1>الكوليكشن الجديد 2027</h1>
+  <h1 id="pageTitle">الكوليكشن الجديد 2027</h1>
   <p>U Women & Kids</p>
+  <input class="q" id="q" type="search" enterkeyhint="search" placeholder="ابحث بالكود أو الاسم أو اللون…" aria-label="بحث">
 </header>
 <div class="bar">
   <div class="filters" id="fGender"></div>
@@ -55,9 +64,22 @@ const CATS = {all:"كل الأنواع","suit-girls":"سوت بناتي","suit-b
 const G_NAME = {girls:"بناتي",boys:"أولادي",both:"بناتي وأولادي"};
 const A_NAME = {kids:"أطفال",teen:"محير"};
 let gender = "all", age = "all", current = "all";
+/* البحث: بييجي من خانة البحث في أي صفحة (?q=...) أو من الخانة اللي فوق */
+let query = (new URLSearchParams(location.search).get("q") || "").trim();
+let hits = null;
+/* المفضلة: ?fav=1 بيعرض الموديلات اللي العميل دوس على قلبها بس */
+const favOnly = new URLSearchParams(location.search).get("fav") === "1";
+const FAV = window.UMODA_FAV || {has:()=>false, toggle:()=>false};
+if(favOnly){
+  document.getElementById("pageTitle").textContent = "المفضلة";
+  const fl = document.getElementById("favLink"); fl.textContent = "كل الموديلات"; fl.href = "new-collection.html";
+}
+function runSearch(){ hits = (query && window.UMODA_SEARCH) ? UMODA_SEARCH(query) : null; }
 
 /* الموديل بيظهر لو مطابق للنوع والسن المختارين (الموديل اللي للاتنين بيظهر في بناتي وفي أولادي) */
 function matchGA(p){
+  if(hits && hits.indexOf(String(p.code))<0) return false;
+  if(favOnly && !FAV.has(p.code)) return false;
   return (gender==="all" || p.gender===gender || p.gender==="both") &&
          (age==="all" || (p.ages||[]).includes(age));
 }
@@ -87,9 +109,11 @@ function renderGrid(){
   const g = document.getElementById("grid");
   g.innerHTML = "";
   const list = PRODUCTS.filter(p=>matchGA(p) && (current==="all"||p.cat===current));
-  document.getElementById("count").textContent = list.length ? list.length + " موديل" : "";
+  document.getElementById("count").textContent = (query ? 'نتايج البحث عن "' + query + '": ' : "") + (list.length ? list.length + " موديل" : (query ? "مفيش" : ""));
   if(!list.length){
-    g.innerHTML = '<div class="empty">مفيش موديلات بالاختيار ده. جرّب تغيّر النوع أو السن.</div>';
+    g.innerHTML = '<div class="empty">' + (favOnly && !query && gender==="all" && age==="all" && current==="all"
+      ? 'لسه ما اخترتش موديلات في المفضلة. دوس على القلب ♡ على أي موديل علشان يتحفظ هنا.'
+      : 'مفيش موديلات بالاختيار ده. جرّب تغيّر النوع أو السن أو كلمة البحث.') + '</div>';
     return;
   }
   list.forEach(p=>{
@@ -98,7 +122,14 @@ function renderGrid(){
     card.id = "m-" + p.code;
     const main = document.createElement("img");
     main.className = "main"; main.loading = "lazy"; main.alt = p.title + " كود " + p.code; main.src = p.images[0];
+    main.onclick = ()=>{ location.href = "product.html?code=" + encodeURIComponent(p.code); };
     card.appendChild(main);
+    const heart = document.createElement("button");
+    heart.className = "heart"; heart.type = "button";
+    const paint = ()=>{ const on = FAV.has(p.code); heart.textContent = on ? "♥" : "♡"; heart.setAttribute("aria-pressed", String(on)); heart.setAttribute("aria-label", on ? "شيل من المفضلة" : "ضيف للمفضلة"); };
+    heart.onclick = ()=>{ FAV.toggle(p.code); if(favOnly){ renderFilters(); renderGrid(); } else paint(); };
+    paint();
+    card.appendChild(heart);
     const info = document.createElement("div"); info.className = "info";
     const link = document.createElement("a");
     link.className = "order"; link.target = "_blank"; link.rel = "noopener"; link.textContent = "اطلب على واتساب";
@@ -132,7 +163,11 @@ function renderGrid(){
     g.appendChild(card);
   });
 }
-renderFilters(); renderGrid();
+const qBox = document.getElementById("q");
+qBox.value = query;
+qBox.addEventListener("input", ()=>{ query = qBox.value.trim(); runSearch(); renderFilters(); renderGrid(); });
+qBox.addEventListener("keydown", e=>{ if(e.key==="Enter"){ e.preventDefault(); qBox.blur(); } });
+runSearch(); renderFilters(); renderGrid();
 </script>
 </body>
 </html>

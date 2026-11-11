@@ -70,3 +70,88 @@ var PRODUCTS = CATALOG.products.map(function(p){
   p.colors.forEach(function(c){ if(c.sizes && c.sizes.length < p.sizes.length) sizes += ' (' + c.name.ar + ': ' + c.sizes.join('-') + ' فقط)'; });
   return {code:p.code, title:p.name.ar, cat:p.group, gender:p.gender, ages:p.ages, price:p.price, sizes:sizes, images:images, imageColors:imageColors};
 });
+
+/* ============================================================
+   البحث — شغال في كل الصفحات اللي فيها خانة البحث (الرئيسية وصفحة الموديل)
+   لأن الملف ده بيتحمل فيهم كلهم. الكتابة + Enter (أو الضغط على العدسة):
+   - لو المكتوب كود موديل بالظبط  -> يفتح صفحة الموديل
+   - غير كده -> يفتح صفحة الكوليكشن بنتايج البحث
+   ============================================================ */
+(function(){
+  function norm(s){
+    return String(s||'').toLowerCase()
+      .replace(/[\u064B-\u0652\u0640]/g,'').replace(/[\u0623\u0625\u0622]/g,'\u0627')
+      .replace(/\u0629/g,'\u0647').replace(/\u0649/g,'\u064A')
+      .replace(/[\u0660-\u0669]/g,function(d){return String(d.charCodeAt(0)-0x0660)});
+  }
+  var G={girls:'بناتي بنات بنت girls girl',boys:'أولادي أولاد ولادي ولاد ولد boys boy',both:'بناتي بنات بنت أولادي أولاد ولادي ولاد ولد girls girl boys boy'};
+  var T={'suit-girls':'سوت طقم set suit','suit-boys':'سوت طقم set suit',hoodie:'هودي هوديز hoodie',sweatshirt:'سويت شيرت سويتشيرت sweatshirt',jacket:'جاكيت جاكت jacket',tops:'بلوفر توب تيشيرت قميص top pullover shirt',pants:'بنطلون بناطيل pants trousers'};
+  var A={kids:'أطفال اطفال بيبي kids baby',teen:'محير teen'};
+  function hay(p){
+    var c=p.colors.map(function(k){return k.name.ar+' '+k.name.en}).join(' ');
+    var a=(p.ages||[]).map(function(x){return A[x]||''}).join(' ');
+    return norm([p.code,p.name.ar,p.name.en,c,G[p.gender]||'',T[p.group]||'',a,p.sizes.join(' ')].join(' '));
+  }
+  /* بيرجع أكواد الموديلات اللي فيها كل كلمات البحث */
+  window.UMODA_SEARCH=function(q){
+    var t=norm(q).split(/\s+/).filter(Boolean);
+    if(!t.length) return null;
+    return CATALOG.products.filter(function(p){var h=hay(p);return t.every(function(w){return h.indexOf(w)>=0})}).map(function(p){return String(p.code)});
+  };
+  function go(q){
+    q=String(q||'').trim(); if(!q) return;
+    var code=norm(q);
+    var exact=CATALOG.products.some(function(p){return String(p.code)===code});
+    location.href=exact?'product.html?code='+encodeURIComponent(code):'new-collection.html?q='+encodeURIComponent(q);
+  }
+  function hook(){
+    document.querySelectorAll('.search input').forEach(function(inp){
+      var busy=false,run=function(e){if(e)e.preventDefault();if(busy)return;busy=true;setTimeout(function(){busy=false},400);go(inp.value)};
+      inp.setAttribute('enterkeyhint','search');
+      inp.addEventListener('keydown',function(e){if(e.key==='Enter'||e.keyCode===13)run(e)});
+      inp.addEventListener('search',function(){if(inp.value)run()});
+      var ic=inp.parentNode.querySelector('svg');
+      if(ic){ic.style.cursor='pointer';ic.addEventListener('click',run)}
+    });
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
+
+/* ============================================================
+   المفضلة (القلب) + أزرار وروابط كانت موجودة شكل بس
+   - القلب على أي موديل بيتحفظ على جهاز العميل
+   - القلب اللي فوق في الهيدر بيفتح صفحة المفضلة
+   - "حسابي" وأيقونة الحساب بيفتحوا صفحة تتبع الطلب (الموقع مفيهوش تسجيل حسابات)
+   - رابط "وصل حديثاً" القديم (#new) بيفتح صفحة الكوليكشن
+   ============================================================ */
+(function(){
+  var KEY='u-fav';
+  function get(){try{var a=JSON.parse(localStorage.getItem(KEY)||'[]');return Array.isArray(a)?a.map(String):[]}catch(e){return[]}}
+  function set(a){try{localStorage.setItem(KEY,JSON.stringify(a))}catch(e){}}
+  window.UMODA_FAV={
+    list:get,
+    has:function(c){return get().indexOf(String(c))>=0},
+    toggle:function(c){c=String(c);var a=get(),i=a.indexOf(c);if(i<0)a.push(c);else a.splice(i,1);set(a);return i<0}
+  };
+  function mark(){
+    document.querySelectorAll('.card[data-code] .fav').forEach(function(b){
+      var on=UMODA_FAV.has(b.closest('.card').dataset.code),t=on?'\u2665':'\u2661';
+      if(b.getAttribute('aria-pressed')!==String(on))b.setAttribute('aria-pressed',String(on));
+      if(b.textContent!==t)b.textContent=t;
+    });
+  }
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('.card[data-code] .fav'):null;
+    if(b){UMODA_FAV.toggle(b.closest('.card').dataset.code);setTimeout(mark,0)}
+  },true);
+  function hook(){
+    document.querySelectorAll('.icons button[aria-label="Wishlist"]').forEach(function(b){b.addEventListener('click',function(){location.href='new-collection.html?fav=1'})});
+    document.querySelectorAll('.icons button[aria-label="Account"]').forEach(function(b){b.addEventListener('click',function(){location.href='track.html'})});
+    document.querySelectorAll('.top nav a[href="#"]').forEach(function(a){a.setAttribute('href','track.html')});
+    document.querySelectorAll('a[href="#new"],a[href="index.html#new"]').forEach(function(a){a.setAttribute('href','new-collection.html')});
+    mark();
+    var cols=document.getElementById('cols');
+    if(cols&&window.MutationObserver)new MutationObserver(mark).observe(cols,{childList:true,subtree:true});
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',hook);else hook();
+})();
