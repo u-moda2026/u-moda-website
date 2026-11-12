@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>حريمي | U Women & Kids</title>
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ffffff; --ink:#222; --muted:#777; --line:#e6e2dd;
+    --accent:#b0476b; --chip:#f6f2ee;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+       font-family:'IBM Plex Sans Arabic',Tahoma,Arial,sans-serif}
+  .wrap{max-width:1200px;margin:auto;padding:24px 16px 60px}
+  h1{font-size:1.8rem;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px}
+
+  .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+  .filters button{border:1px solid var(--line);background:var(--chip);color:var(--ink);
+    padding:8px 16px;border-radius:999px;font:inherit;cursor:pointer}
+  .filters button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:28px 20px}
+  .card img{width:100%;aspect-ratio:3/4;object-fit:contain;background:#fafafa;display:block;border-radius:6px}
+  .card h3{font-size:1rem;margin:12px 0 2px}
+  .code{color:var(--muted);font-size:.8rem}
+  .price{font-weight:600;color:var(--accent);margin:6px 0}
+
+  .swatches{display:flex;gap:6px;margin:8px 0}
+  .sw{width:24px;height:24px;border-radius:50%;border:2px solid #fff;
+      box-shadow:0 0 0 1px var(--line);cursor:pointer;padding:0}
+  .sw.on{box-shadow:0 0 0 2px var(--ink)}
+  .cname{font-size:.85rem;color:var(--muted)}
+
+  .sizes{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+  .sizes button{min-width:40px;padding:6px 10px;border:1px solid var(--line);background:#fff;
+    border-radius:4px;font:inherit;font-size:.85rem;cursor:pointer}
+  .sizes button.on{border-color:var(--ink);background:var(--ink);color:#fff}
+
+  .add{width:100%;padding:11px;border:0;border-radius:4px;background:var(--accent);
+       color:#fff;font:inherit;font-weight:600;cursor:pointer;margin-top:6px}
+  .add:disabled{opacity:.5;cursor:default}
+  button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+  .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--ink);
+    color:#fff;padding:10px 20px;border-radius:999px;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>كولكشن الحريمي</h1>
+  <p class="sub">قمصان، فساتين، جيب وبنطلونات</p>
+
+  <div class="filters" id="filters">
+    <button data-cat="all" class="on">الكل</button>
+    <button data-cat="shirt">قمصان</button>
+    <button data-cat="dress">فساتين</button>
+    <button data-cat="skirt">جيب</button>
+    <button data-cat="pant">بنطلونات</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+// بيانات موديلات الحريمي — عدّل الأسعار أو الأسماء من هنا بس
+const WOMEN_PRODUCTS = [
+  {
+    code: 'w1268', name: 'بلوزة منقطة بفيونكة', category: 'shirt', price: 450,
+    sizes: ['مقاس واحد'],
+    colors: [{ name: 'بيج منقط', hex: '#e9e0d2', img: '/w1268-beige.jpg' }]
+  },
+  {
+    code: 'w1269', name: 'قميص مقلم واسع', category: 'shirt', price: 450,
+    sizes: ['مقاس واحد'],
+    colors: [
+      { name: 'أزرق', hex: '#6f93d6', img: '/w1269-blue.jpg' },
+      { name: 'بينك', hex: '#eab3dc', img: '/w1269-pink.jpg' }
+    ]
+  },
+  {
+    code: 'w12681', name: 'قميص بتكستشر', category: 'shirt', price: 450,
+    sizes: ['مقاس واحد'],
+    colors: [
+      { name: 'زيتي', hex: '#7d8a5c', img: '/w12681-olive.jpg' },
+      { name: 'أسود', hex: '#1a1a1a', img: '/w12681-black.jpg' }
+    ]
+  },
+  {
+    code: 'w12682', name: 'قميص برباط جانبي', category: 'shirt', price: 400,
+    sizes: ['مقاس واحد'],
+    colors: [{ name: 'أصفر', hex: '#f5e27a', img: '/w12682-yellow.jpg' }]
+  },
+  {
+    code: 'w12683', name: 'قميص بجيب', category: 'shirt', price: 450,
+    sizes: ['مقاس واحد'],
+    colors: [
+      { name: 'أصفر', hex: '#f5e27a', img: '/w12683-yellow.jpg' },
+      { name: 'بينك', hex: '#f0a8d0', img: '/w12683-pink.jpg' }
+    ]
+  },
+  {
+    code: 'w12684', name: 'فستان مشجر بزراير', category: 'dress', price: 550,
+    sizes: ['مقاس واحد'],
+    colors: [
+      { name: 'لافندر', hex: '#b9b8d3', img: '/w12684-lavender.jpg' },
+      { name: 'خوخي', hex: '#e2b8a3', img: '/w12684-peach.jpg' },
+      { name: 'أخضر فاتح', hex: '#a9bb98', img: '/w12684-green.jpg' },
+      { name: 'روز', hex: '#e2a3b0', img: '/w12684-rose.jpg' }
+    ]
+  },
+  {
+    code: 'w12685', name: 'فستان مشجر بوسط أستك', category: 'dress', price: 650,
+    sizes: ['مقاس واحد'],
+    colors: [{ name: 'أوف وايت', hex: '#efe9df', img: '/w12685-offwhite.jpg' }]
+  },
+  {
+    code: 'w12686', name: 'جيبة جينز طويلة', category: 'skirt', price: 550,
+    sizes: ['M', 'L', 'XL'],
+    colors: [{ name: 'أزرق جينز', hex: '#1f3f73', img: '/w12686-denim.jpg' }]
+  },
+  {
+    code: 'w12687', name: 'بنطلون واسع بحزام', category: 'pant', price: 450,
+    sizes: ['42', '44', '46'],
+    colors: [{ name: 'أسود', hex: '#1a1a1a', img: '/w12687-black.jpg' }]
+  }
+];
+</script>
+<script>
+const grid = document.getElementById('grid');
+
+function card(p){
+  const el = document.createElement('div');
+  el.className = 'card';
+  el.dataset.cat = p.category;
+  let color = 0;
+  let size = p.sizes.length === 1 ? p.sizes[0] : null;
+
+  el.innerHTML = `
+    <img src="${p.colors[0].img}" alt="${p.name}" loading="lazy">
+    <h3>${p.name}</h3>
+    <div class="code">كود: ${p.code}</div>
+    <div class="price">${p.price} ج.م</div>
+    <div class="swatches">${p.colors.map((c,i)=>
+      `<button class="sw ${i===0?'on':''}" style="background:${c.hex}" title="${c.name}" aria-label="${c.name}" data-i="${i}"></button>`).join('')}
+    </div>
+    <div class="cname">اللون: <span>${p.colors[0].name}</span></div>
+    <div class="sizes">${p.sizes.map(s=>
+      `<button class="${size===s?'on':''}" data-s="${s}">${s}</button>`).join('')}
+    </div>
+    <button class="add" ${size?'':'disabled'}>${size?'أضف للسلة':'اختاري المقاس'}</button>`;
+
+  const img = el.querySelector('img');
+  const cname = el.querySelector('.cname span');
+  const add = el.querySelector('.add');
+
+  el.querySelectorAll('.sw').forEach(b => b.onclick = () => {
+    color = +b.dataset.i;
+    el.querySelectorAll('.sw').forEach(x => x.classList.toggle('on', x === b));
+    img.src = p.colors[color].img;
+    cname.textContent = p.colors[color].name;
+  });
+
+  el.querySelectorAll('.sizes button').forEach(b => b.onclick = () => {
+    size = b.dataset.s;
+    el.querySelectorAll('.sizes button').forEach(x => x.classList.toggle('on', x === b));
+    add.disabled = false;
+    add.textContent = 'أضف للسلة';
+  });
+
+  add.onclick = () => {
+    const item = {
+      id: `${p.code}-${p.colors[color].name}-${size}`,
+      code: p.code, name: p.name, price: p.price,
+      color: p.colors[color].name, size, img: p.colors[color].img, qty: 1
+    };
+    // لو موقعك فيه دالة addToCart جاهزة هتتستخدم هي
+    if (typeof window.addToCart === 'function') window.addToCart(item);
+    else saveToCart(item);
+    toast(`اتضاف ${p.name} للسلة`);
+  };
+  return el;
+}
+
+// سلة احتياطية لو مفيش دالة جاهزة في الموقع
+function saveToCart(item){
+  let cart = [];
+  try { cart = JSON.parse(localStorage.getItem('cart')) || []; } catch(e){}
+  const found = cart.find(x => x.id === item.id);
+  if (found) found.qty++; else cart.push(item);
+  try { localStorage.setItem('cart', JSON.stringify(cart)); } catch(e){}
+}
+
+function toast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+
+WOMEN_PRODUCTS.forEach(p => grid.appendChild(card(p)));
+
+document.getElementById('filters').onclick = e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#filters button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.card').forEach(c =>
+    c.style.display = (b.dataset.cat === 'all' || c.dataset.cat === b.dataset.cat) ? '' : 'none');
+};
+</script>
+</body>
+</html>
