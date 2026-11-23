@@ -136,8 +136,19 @@ function renderGrid(){
     /* رسالة الطلب فيها لون الصورة المختارة */
     const setMsg = i=>{
       const pic = (p.imageColors && p.imageColors[i]) ? " - اللون: " + p.imageColors[i] : "";
-      link.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent("أهلاً، عايز أطلب: " + p.title + " - كود " + p.code + pic + " - السعر " + p.price + " ج.م");
+      link.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(p.soldOut
+        ? "أهلاً، الموديل " + p.title + " - كود " + p.code + " مكتوب إنه نفد. هيتوفر تاني إمتى؟"
+        : "أهلاً، عايز أطلب: " + p.title + " - كود " + p.code + pic + " - السعر " + p.price + " ج.م");
     };
+    if(p.soldOut){
+      link.textContent = "نفدت الكمية – اسأل على واتساب";
+      link.style.background = "#8a8a8a";
+      main.style.opacity = ".55";
+      const st = document.createElement("span");
+      st.textContent = "نفدت الكمية";
+      st.style.cssText = "position:absolute;top:10px;left:10px;background:#a11;color:#fff;border-radius:20px;padding:3px 12px;font-size:13px;font-weight:600;z-index:2";
+      card.appendChild(st);
+    }
     setMsg(0);
     if(p.images.length>1){
       const th = document.createElement("div"); th.className = "thumbs";

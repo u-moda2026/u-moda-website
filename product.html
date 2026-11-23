@@ -150,6 +150,8 @@ function render(){
   $('ptitle').textContent=nm+' – '+p.code;
   $('pprice').innerHTML=p.price==null?'<span style="font-size:16px;font-weight:400">'+T('Price on WhatsApp','السعر على واتساب')+'</span>':'<span>'+money(p.price)+'</span>'+(p.old?'<s>'+money(p.old)+'</s>':'');
   $('pcode').textContent=T('Code ','كود ')+p.code+(g?' · '+T(g[0],g[1]):'')+' · '+T('Sizes: ','المقاسات: ')+zs.join(' - ');
+  $('pcode').className='stock '+(p.soldOut?'no':'ok');
+  if(p.soldOut)$('pcode').textContent=T('Sold out · ','نفدت الكمية · ')+$('pcode').textContent;
   $('cn').textContent=ar?c.name.ar:c.name.en;
   $('colors').innerHTML='';
   p.colors.forEach(function(k,i){var b=document.createElement('button');b.className='sw';b.style.background=k.hex;b.setAttribute('aria-pressed',i===ci);b.setAttribute('aria-label',ar?k.name.ar:k.name.en);b.onclick=function(){ci=i;ii=0;if(sizesOf().indexOf(size)<0)size=null;render()};$('colors').appendChild(b)});
@@ -159,7 +161,7 @@ function render(){
   $('thumbs').innerHTML='';
   c.imgs.forEach(function(u,i){var b=document.createElement('button');b.setAttribute('aria-label','Photo '+(i+1));b.setAttribute('aria-pressed',i===ii);b.style.background='url('+u+') center 22%/cover';b.onclick=function(){ii=i;render()};$('thumbs').appendChild(b)});
   $('q').textContent=qty;
-  $('add').textContent=p.price==null?T('Order on WhatsApp','اطلب عبر واتساب'):T('Add to cart','أضف إلى السلة');
+  $('add').textContent=p.soldOut?T('Sold out – ask on WhatsApp','نفدت الكمية – اسأل على واتساب'):p.price==null?T('Order on WhatsApp','اطلب عبر واتساب'):T('Add to cart','أضف إلى السلة');
   /* منتجات مشابهة: نفس النوع (بناتي/أولادي) ونفس السن الأول */
   var score=function(x){var s=0;if(x.gender===p.gender||x.gender==='both'||p.gender==='both')s+=4;if((x.ages||[]).some(function(a){return (p.ages||[]).indexOf(a)>=0}))s+=2;if(x.group===p.group)s+=1;return s};
   var sim=CAT.filter(function(x){return x.code!==p.code}).sort(function(a,b){return score(b)-score(a)}).slice(0,4);
@@ -169,6 +171,9 @@ function render(){
 $('mn').onclick=function(){qty=Math.max(1,qty-1);render()};
 $('pl').onclick=function(){qty=Math.min(10,qty+1);render()};
 $('add').onclick=function(){
+  if(cur.soldOut){
+    var u='https://wa.me/'+ORDER_NUM+'?text='+encodeURIComponent('أهلاً، الموديل '+cur.name.ar+' - كود '+cur.code+' مكتوب إنه نفد. هيتوفر تاني إمتى؟');
+    if(!window.open(u,'_blank'))location.href=u;return}
   if(!size){$('msg').textContent=T('Please choose a size','من فضلك اختر المقاس');return}
   var c=cur.colors[ci];
   if(cur.price==null){

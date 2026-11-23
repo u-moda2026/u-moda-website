@@ -214,11 +214,11 @@ footer .fl{display:flex;flex-wrap:wrap;gap:8px 18px;justify-content:center;margi
    item: [English name, Arabic name, price, old price (0 = none), tag ("Sale"/"New"/""), photo gradient or photo URL] */
 (function(){
 var CATS=[['suit-girls','girls-s',['Girls Suits','سوت بناتي']],['suit-boys','boys',['Boys Suits','سوت أولاد']],['hoodie','hoodies',['Hoodies','هودي']],['sweatshirt','sweatshirts',['Sweatshirts','سويت شيرت']],['jacket','jackets',['Jackets','جاكيت']],['tops','tops',['Tops','بلوفر / توب']],['pants','pants',['Pants','بناطيل']]];
-var STORE={collections:CATS.map(function(c){var items=(window.CATALOG?CATALOG.products:[]).filter(function(p){return p.group===c[0]}).map(function(p){return [p.name.en+' \u2013 '+p.code,p.name.ar+' \u2013 '+p.code,p.price,0,'New',p.colors[0].imgs[0],p.code]});return {id:c[1],title:c[2],items:items}}).filter(function(c){return c.items.length})};
+var STORE={collections:CATS.map(function(c){var items=(window.CATALOG?CATALOG.products:[]).filter(function(p){return p.group===c[0]}).map(function(p){return [p.name.en+' \u2013 '+p.code,p.name.ar+' \u2013 '+p.code,p.price,0,p.soldOut?'Sold out':'New',p.colors[0].imgs[0],p.code]});return {id:c[1],title:c[2],items:items}}).filter(function(c){return c.items.length})};
 var timers=[],reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
 function fmt(n,ar){return n.toLocaleString('en-US')+(ar?' \u062c\u0646\u064a\u0647':' EGP')}
 function card(it,ar){
- var tag=it[4]?'<span class="tag">'+(ar?(it[4]==='Sale'?'\u062a\u062e\u0641\u064a\u0636':'\u062c\u062f\u064a\u062f'):it[4])+'</span>':'';
+ var tag=it[4]==='Sold out'&&window.UMODA_SOLD_TAG?UMODA_SOLD_TAG(ar):it[4]?'<span class="tag">'+(ar?(it[4]==='Sale'?'\u062a\u062e\u0641\u064a\u0636':'\u062c\u062f\u064a\u062f'):it[4])+'</span>':'';
  var ph=/^(?:https?:|data:)|\.(?:jpe?g|png|webp|gif)$/i.test(it[5])?'background:#eee url('+it[5]+') center 22%/cover':'background:linear-gradient('+it[5]+')';
  return '<article class="card" data-code="'+it[6]+'">'+tag+'<button class="fav" aria-pressed="false" aria-label="Wishlist">\u2661</button><div class="img" style="'+ph+'">'+(/^(?:https?:|data:)|\.(?:jpe?g|png|webp|gif)$/i.test(it[5])?'':(ar?'\u0635\u0648\u0631\u0629 \u0627\u0644\u0645\u0646\u062a\u062c':'Product photo'))+'</div><div class="info"><b>'+it[ar?1:0]+'</b><span class="p">'+(it[3]?'<s>'+fmt(it[3],ar)+'</s>':'')+(it[2]==null?(ar?'اسأل عن السعر':'Ask for price'):fmt(it[2],ar))+'</span><button class="add">'+(ar?'اختر المقاس':'Choose size')+'</button></div></article>'}
 function render(){
